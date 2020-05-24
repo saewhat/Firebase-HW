@@ -23,7 +23,7 @@ $("#submitBtn").on("click",function(){
     var frequency = $("#freqInput").val().trim();
 
     var newData = {
-        trainName: trainName,
+        name: trainName,
         destination: destination,
         firstTrain: firstTrain,
         frequency: frequency
@@ -37,8 +37,4 @@ $("#submitBtn").on("click",function(){
     $("#freqInput").val("");
 
     return false;
-})
-
-newData.ref().on("child_added",function(snapshot){
-    var name = 
 })
