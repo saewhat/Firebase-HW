@@ -19,7 +19,7 @@ $("#submitBtn").on("click",function(){
 
     var trainName = $("#nameInput").val().trim();
     var destination = $("#destiInput").val().trim();
-    var firstTrain = $("#firstInput").val().trim();
+    var firstTrain = moment($("#firstInput").val().trim(), "HH:mm").subtract(10,"years").format("X");
     var frequency = $("#freqInput").val().trim();
 
     var newData = {
@@ -37,4 +37,17 @@ $("#submitBtn").on("click",function(){
     $("#freqInput").val("");
 
     return false;
-})
+});
+
+trainData.ref().on("child_added", function(snapshot){
+    var name = snapshot.val().name;
+    var destination = snapshot.val().destination;
+    var firstTrain = snapshot.val().firstTrain;
+    var frequency = snapshot.val().frequency;
+
+    var remainder = moment().diff(moment.unix(firstTrain),"minutes")%frequency;
+    var minutes = frequency - remainder;
+    var arrival = moment().add(minutes,"m").format("hh:mm A");
+
+    $("#table > tBody").append("<tr><td>" + name + "</td><td>" + destination + "</td><td>" + frequency + "</td><td>" + arrival + "</td><td>" + minutes + "</td></tr>");
+});
